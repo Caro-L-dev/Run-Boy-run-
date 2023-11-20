@@ -49,7 +49,29 @@ class Character extends Entity {
       this.y = GROUND_LEVEL;
       this.jumpVelocity = 0;
     }
+
+    this.trail.forEach((trail) => {
+      trail.x -= 5;
+    });
+
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > 20) {
+      this.trail.shift();
+    }
   }
+
+  draw(context) {
+    context.fillStyle = "#aaaa";
+    this.trail.forEach((position) => {
+      context.fillRect(
+        position.x + this.width / 2,
+        position.y + this.height / 2,
+        5,
+        5
+      );
+    });
+  }
+
   jump() {
     if (this.y === GROUND_LEVEL) {
       this.jumpVelocity = -20;
