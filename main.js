@@ -41,6 +41,7 @@ class Character extends Entity {
     this.jumpVelocity = 0;
     this.trail = [];
   }
+  update() {}
 }
 
 class Bird extends Entity {
@@ -85,7 +86,7 @@ class Game {
 
     setTimeout(() => {
       this.spawnObstacle();
-    }, Math.max(500, 200 - this.speed * 5));
+    }, Math.max(500, 2000 - this.speed * 5));
   }
 
   update() {
@@ -93,6 +94,11 @@ class Game {
     this.context.fillStyle = "green";
 
     this.context.fillRect(0, GROUND_LEVEL, GAME_WIDTH, GAME_HEIGHT);
+
+    this.entities.forEach((entity) => {
+      entity.update();
+      entity.draw(this.context);
+    });
   }
 }
 
