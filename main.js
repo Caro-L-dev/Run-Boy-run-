@@ -41,7 +41,20 @@ class Character extends Entity {
     this.jumpVelocity = 0;
     this.trail = [];
   }
-  update() {}
+  update() {
+    this.y += this.jumpVelocity;
+    this.jumpVelocity += 1;
+
+    if (this.y > GROUND_LEVEL) {
+      this.y = GROUND_LEVEL;
+      this.jumpVelocity = 0;
+    }
+  }
+  jump() {
+    if (this.y === GROUND_LEVEL) {
+      this.jumpVelocity = -20;
+    }
+  }
 }
 
 class Bird extends Entity {
@@ -86,6 +99,10 @@ class Game {
     this.play = true;
 
     this.spawnObstacle();
+
+    document.addEventListener("keydown", () => {
+      this.character.jump();
+    });
   }
 
   spawnObstacle() {
