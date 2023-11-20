@@ -4,9 +4,7 @@ const GROUND_LEVEL = 300;
 
 const OBSTACLE_SIZE = 40;
 const BIRD_SIZE = 40;
-
-const CHARACTER_SIZE_X = 120;
-const CHARACTER_SIZE_Y = 160;
+const CHARACTER_SIZE = 120;
 
 const CHARACTER_POSITION_X = 50;
 
@@ -39,7 +37,7 @@ class Entity {
 
 class Character extends Entity {
   constructor(x, y) {
-    super(x, y, CHARACTER_SIZE_X, CHARACTER_SIZE_Y, CHARACTER_IMAGE);
+    super(x, y, CHARACTER_SIZE, CHARACTER_SIZE, CHARACTER_IMAGE);
     this.jumpVelocity = 0;
     this.trail = [];
   }
@@ -47,7 +45,7 @@ class Character extends Entity {
 
 class Bird extends Entity {
   constructor(x, speed) {
-    super(x, GROUND_LEVEL - CHARACTER_SIZE_X, BIRD_SIZE, BIRD_SIZE, BIRD_IMAGE);
+    super(x, GROUND_LEVEL - CHARACTER_SIZE, BIRD_SIZE, BIRD_SIZE, BIRD_IMAGE);
     this.speed = speed;
   }
 
@@ -63,6 +61,7 @@ class Obstacle extends Entity {
   }
   update() {
     this.x -= this.speed;
+  }
 }
 
 class Game {
@@ -72,7 +71,28 @@ class Game {
     this.entities = [this.character];
     this.score = 0;
     this.speed = 5;
-    this.play = true; 
+    this.play = true;
+
+    this.spawnObstacle();
+  }
+
+  spawnObstacle() {
+    if (Math.random() < 0.5) {
+      this.entities.push(new Obstacle(GAME_WIDTH, this.speed));
+    } else {
+      this.entities.push(new Bird(GAME_WIDTH, this.speed));
+    }
+
+    setTimeout(() => {
+      this.spawnObstacle();
+    }, Math.max(500, 200 - this.speed * 5));
+  }
+
+  update() {
+    this.context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    this.context.fillStyle = "green";
+
+    this.context.fillRect(0, GROUND_LEVEL, GAME_WIDTH, GAME_HEIGHT);
   }
 }
 
@@ -80,3 +100,12 @@ const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
 const game = new Game(context);
+
+const frame = () => {
+  if (game.play) {
+    game.update();
+    requestAnimationFrame(frame);
+  }
+};
+
+requestAnimationFrame(frame);
