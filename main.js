@@ -9,12 +9,13 @@ const CHARACTER_SIZE = 80;
 const CHARACTER_POSITION_X = 50;
 
 const GROUND_COLOR = "green";
+const SKY_COLOR = "skyblue";
 const SCORE_COLOR = "black";
-const TRAIL_COLOR = "gray";
-const GAME_OVER_MSG_COLOR = "red";
+const TRAIL_COLOR = "white";
+const GAME_OVER_MSG_COLOR = "#78350f";
 
 const CHARACTER_IMAGE = new Image();
-CHARACTER_IMAGE.src = "robot.png";
+CHARACTER_IMAGE.src = "chara.png";
 
 const BIRD_IMAGE = new Image();
 BIRD_IMAGE.src = "bird.png";
@@ -174,9 +175,12 @@ class Game {
 
   update() {
     this.context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+    this.context.fillStyle = SKY_COLOR;
+    this.context.fillRect(0, 0, GAME_WIDTH, GROUND_LEVEL + CHARACTER_SIZE);
+
     this.drawScore();
     this.context.fillStyle = GROUND_COLOR;
-
     this.context.fillRect(
       0,
       GROUND_LEVEL + CHARACTER_SIZE,
@@ -198,6 +202,63 @@ class Game {
       this.play = false;
       clearInterval(this.scoreInterval);
       clearInterval(this.speedInterval);
+
+      const rectWidth = GAME_WIDTH / 2;
+      const rectHeight = 60;
+      const rectX = GAME_WIDTH / 4;
+      const rectY = GAME_HEIGHT / 2 - rectHeight / 2;
+
+      const cornerRadius = 10;
+
+      // Dessiner le rectangle avec des coins arrondis
+      this.context.fillStyle = GAME_OVER_MSG_COLOR;
+      this.context.beginPath();
+      this.context.moveTo(rectX + cornerRadius, rectY);
+      this.context.lineTo(rectX + rectWidth - cornerRadius, rectY);
+      this.context.arcTo(
+        rectX + rectWidth,
+        rectY,
+        rectX + rectWidth,
+        rectY + cornerRadius,
+        cornerRadius
+      );
+      this.context.lineTo(rectX + rectWidth, rectY + rectHeight - cornerRadius);
+      this.context.arcTo(
+        rectX + rectWidth,
+        rectY + rectHeight,
+        rectX + rectWidth - cornerRadius,
+        rectY + rectHeight,
+        cornerRadius
+      );
+      this.context.lineTo(rectX + cornerRadius, rectY + rectHeight);
+      this.context.arcTo(
+        rectX,
+        rectY + rectHeight,
+        rectX,
+        rectY + rectHeight - cornerRadius,
+        cornerRadius
+      );
+      this.context.lineTo(rectX, rectY + cornerRadius);
+      this.context.arcTo(
+        rectX,
+        rectY,
+        rectX + cornerRadius,
+        rectY,
+        cornerRadius
+      );
+      this.context.closePath();
+      this.context.fill();
+
+      // Dessiner le message au centre du rectangle
+      this.context.font = "24px Rocher";
+      this.context.fillStyle = "white";
+
+      const text = "GAME OVER DUDE!";
+      const textWidth = this.context.measureText(text).width;
+      const textX = rectX + (rectWidth - textWidth) / 2;
+      const textY = rectY + rectHeight / 2 + 10;
+
+      this.context.fillText(text, textX, textY);
     }
   }
 
@@ -216,10 +277,6 @@ const frame = () => {
   if (game.play) {
     game.update();
     requestAnimationFrame(frame);
-  } else {
-    context.font = "48px Arial";
-    context.fillStyle = GAME_OVER_MSG_COLOR;
-    context.fillText("GAME OVER DUDE!", GAME_WIDTH / 4, GAME_HEIGHT / 2);
   }
 };
 
