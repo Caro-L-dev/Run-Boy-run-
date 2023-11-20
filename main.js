@@ -8,6 +8,11 @@ const CHARACTER_SIZE = 80;
 
 const CHARACTER_POSITION_X = 50;
 
+const GROUND_COLOR = "green";
+const SCORE_COLOR = "black";
+const TRAIL_COLOR = "gray";
+const GAME_OVER_MSG_COLOR = "red";
+
 const CHARACTER_IMAGE = new Image();
 CHARACTER_IMAGE.src = "robot.png";
 
@@ -29,9 +34,10 @@ class Entity {
   draw(context) {
     context.drawImage(this.image, this.x, this.y, this.width, this.height);
 
-    context.strokeStyle = "#ff000050";
-    context.lineWidth = 2;
-    context.strokeRect(this.x, this.y, this.width, this.height);
+    //draw collide box
+    // context.strokeStyle = "#ff000050";
+    // context.lineWidth = 2;
+    // context.strokeRect(this.x, this.y, this.width, this.height);
   }
 }
 
@@ -61,7 +67,7 @@ class Character extends Entity {
   }
 
   draw(context) {
-    context.fillStyle = "#aaaa";
+    context.fillStyle = TRAIL_COLOR;
     this.trail.forEach((position) => {
       context.fillRect(
         position.x + this.width / 2,
@@ -169,7 +175,7 @@ class Game {
   update() {
     this.context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     this.drawScore();
-    this.context.fillStyle = "green";
+    this.context.fillStyle = GROUND_COLOR;
 
     this.context.fillRect(
       0,
@@ -197,7 +203,7 @@ class Game {
 
   drawScore() {
     this.context.font = "20px Arial";
-    this.context.fillStyle = "#000000";
+    this.context.fillStyle = SCORE_COLOR;
     this.context.fillText(`Score: ${this.score}`, 10, 30);
   }
 }
@@ -212,7 +218,7 @@ const frame = () => {
     requestAnimationFrame(frame);
   } else {
     context.font = "48px Arial";
-    context.fillStyle = "#ff0000";
+    context.fillStyle = GAME_OVER_MSG_COLOR;
     context.fillText("GAME OVER DUDE!", GAME_WIDTH / 4, GAME_HEIGHT / 2);
   }
 };
