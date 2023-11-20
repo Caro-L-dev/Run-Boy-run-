@@ -70,6 +70,7 @@ class Character extends Entity {
         5
       );
     });
+    super.draw(context);
   }
 
   jump() {
