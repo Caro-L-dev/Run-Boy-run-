@@ -204,13 +204,16 @@ class Game {
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
-
 const game = new Game(context);
 
 const frame = () => {
   if (game.play) {
     game.update();
     requestAnimationFrame(frame);
+  } else {
+    context.font = "48px Arial";
+    context.fillStyle = "#ff0000";
+    context.fillText("GAME OVER DUDE!", GAME_WIDTH / 4, GAME_HEIGHT / 2);
   }
 };
 
