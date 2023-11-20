@@ -4,7 +4,7 @@ const GROUND_LEVEL = 300;
 
 const OBSTACLE_SIZE = 40;
 const BIRD_SIZE = 40;
-const CHARACTER_SIZE = 120;
+const CHARACTER_SIZE = 80;
 
 const CHARACTER_POSITION_X = 50;
 
@@ -93,7 +93,12 @@ class Game {
     this.context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     this.context.fillStyle = "green";
 
-    this.context.fillRect(0, GROUND_LEVEL, GAME_WIDTH, GAME_HEIGHT);
+    this.context.fillRect(
+      0,
+      GROUND_LEVEL + CHARACTER_SIZE,
+      GAME_WIDTH,
+      GAME_HEIGHT - (GROUND_LEVEL + CHARACTER_SIZE)
+    );
 
     this.entities.forEach((entity) => {
       entity.update();
