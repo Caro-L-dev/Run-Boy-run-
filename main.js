@@ -4,8 +4,11 @@ const GROUND_LEVEL = 300;
 
 const OBSTACLE_SIZE = 40;
 const BIRD_SIZE = 40;
+
 const CHARACTER_SIZE_X = 120;
 const CHARACTER_SIZE_Y = 160;
+
+const CHARACTER_POSITION_X = 50;
 
 const CHARACTER_IMAGE = new Image();
 CHARACTER_IMAGE.src = "robot.png";
@@ -34,21 +37,42 @@ class Entity {
   }
 }
 
+class Character extends Entity {
+  constructor(x, y) {
+    super(x, y, CHARACTER_SIZE_X, CHARACTER_SIZE_Y, CHARACTER_IMAGE);
+    this.jumpVelocity = 0;
+    this.trail = [];
+  }
+}
+
+class Bird extends Entity {
+  constructor(x, speed) {
+    super(x, GROUND_LEVEL - CHARACTER_SIZE_X, BIRD_SIZE, BIRD_SIZE, BIRD_IMAGE);
+    this.speed = speed;
+  }
+
+  update() {
+    this.x -= this.speed;
+  }
+}
+
+class Obstacle extends Entity {
+  constructor(x, speed) {
+    super(x, GROUND_LEVEL, OBSTACLE_SIZE, OBSTACLE_SIZE, OBSTACLE_IMAGE);
+    this.speed = speed;
+  }
+  update() {
+    this.x -= this.speed;
+}
+
 class Game {
   constructor(context) {
     this.context = context;
-
-    const entityTest = new Entity(
-      50,
-      50,
-      CHARACTER_SIZE_X,
-      CHARACTER_SIZE_Y,
-      CHARACTER_IMAGE
-    );
-    entityTest.draw(this.context);
-    setInterval(() => {
-      entityTest.draw(this.context);
-    }, 100);
+    this.character = new Character(CHARACTER_POSITION_X, GROUND_LEVEL);
+    this.entities = [this.character];
+    this.score = 0;
+    this.speed = 5;
+    this.play = true; 
   }
 }
 
