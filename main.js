@@ -57,7 +57,13 @@ class Bird extends Entity {
 
 class Obstacle extends Entity {
   constructor(x, speed) {
-    super(x, GROUND_LEVEL, OBSTACLE_SIZE, OBSTACLE_SIZE, OBSTACLE_IMAGE);
+    super(
+      x,
+      GROUND_LEVEL + OBSTACLE_SIZE,
+      OBSTACLE_SIZE,
+      OBSTACLE_SIZE,
+      OBSTACLE_IMAGE
+    );
     this.speed = speed;
   }
   update() {
