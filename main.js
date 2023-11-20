@@ -135,6 +135,21 @@ class Game {
     document.addEventListener("keydown", () => {
       this.character.jump();
     });
+
+    this.scoreInterval = setInterval(() => {
+      this.increaseScore();
+    }, 100);
+    this.speedInterval = setInterval(() => {
+      this.increaseSpeed();
+    }, 1000);
+  }
+
+  increaseScore() {
+    this.score++;
+  }
+
+  increaseSpeed() {
+    this.speed += 0.1;
   }
 
   spawnObstacle() {
@@ -151,6 +166,7 @@ class Game {
 
   update() {
     this.context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    this.drawScore();
     this.context.fillStyle = "green";
 
     this.context.fillRect(
@@ -173,6 +189,12 @@ class Game {
     if (isCollides) {
       this.play = false;
     }
+  }
+
+  drawScore() {
+    this.context.font = "20px Arial";
+    this.context.fillStyle = "#000000";
+    this.context.fillText(`Score: ${this.score}`, 10, 30);
   }
 }
 
