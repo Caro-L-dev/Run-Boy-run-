@@ -48,10 +48,15 @@ class Bird extends Entity {
   constructor(x, speed) {
     super(x, GROUND_LEVEL - CHARACTER_SIZE, BIRD_SIZE, BIRD_SIZE, BIRD_IMAGE);
     this.speed = speed;
+
+    this.time = 0;
   }
 
   update() {
     this.x -= this.speed;
+
+    this.y += Math.sin(this.time) * 2;
+    this.time += 0.1;
   }
 }
 
