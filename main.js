@@ -160,8 +160,10 @@ class Game {
     }
 
     setTimeout(() => {
-      this.spawnObstacle();
-    }, Math.max(500, 2000 - this.speed * 5));
+      if (this.play) {
+        this.spawnObstacle();
+      }
+    }, Math.max(500, 2000 - this.speed * 20));
   }
 
   update() {
@@ -183,11 +185,13 @@ class Game {
 
     const isCollides = this.entities.some((entity) => {
       if (entity === this.character) return false;
-      collides(this.character, entity);
+      return collides(this.character, entity);
     });
 
     if (isCollides) {
       this.play = false;
+      clearInterval(this.scoreInterval);
+      clearInterval(this.speedInterval);
     }
   }
 
